@@ -1,0 +1,18 @@
+spring:
+  cloud:
+    nacos:
+      config:
+        username: nacos
+        password: nacos
+        server-addr: 127.0.0.1:8848
+        namespace: 686d8aeb-e6ee-4d8c-8956-76ff51cfcc15
+        #group: 分组，默认是default
+        file-extension: yaml
+        # 开启nacos自动刷新，如果这个配置没有或者为false会导致配置不能自动刷新
+        refresh-enabled: true
+        # 允许nacos服务端向本地同步配置
+        enable-remote-sync-config: true
+        shared-configs:
+          # 制定data id
+          - data-id: com.jxc.server.common.yml
+            refresh: true

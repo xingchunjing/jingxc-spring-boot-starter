@@ -1,0 +1,14 @@
+spring:
+  profiles:
+    active: dev
+  application:
+    name: jingxc-boot-paypal
+server:
+  port: 8090
+  servlet:
+    context-path: /jingxc/paypal
+  tomcat:
+    threads:
+      max: 1000
+    max-connections: 20000
+  forward-headers-strategy: native

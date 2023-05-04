@@ -1,0 +1,57 @@
+spring:
+  #配置redis
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    password:
+    timeout: 60s
+    jedis:
+      pool:
+        max-idle: -1
+        min-idle: 50
+        max-active: -1
+        max-wait: -1s
+  #配置数据库
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/jingxc_boot_starter?useUnicode=true&useSSL=false&zeroDateTimeBehavior=convertToNull&allowMultiQueries=true&autoReconnect=true&failOverReadOnly=false&characterEncoding=utf-8
+    username: root
+    password: 100uu100UU
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      max-active: 3000
+      filters: stat
+      initialSize: 10
+      maxWait: 60000
+      minIdle: 10
+      timeBetweenEvictionRunsMillis: 60000
+      minEvictableIdleTimeMillis: 300000
+      validationQuery: select 'x'
+      testWhileIdle: true
+      testOnBorrow: true
+      testOnReturn: false
+      poolPreparedStatements: true
+      maxOpenPreparedStatements: 20
+logging:
+  level:
+    #feign日志以什么级别监控哪个接口
+    com.jxc.server.client.FeignClientApi: debug
+feign:
+  httpclient:
+    # 开启链接池
+    enable: true
+    # 最大链接数
+    max-connections: 200
+    # 每个路径最大链接数
+    max-connections-pre-route: 50
+  client:
+    config:
+      default:
+        # Feign链接建立超时时间，默认是10秒
+        connectTimeout: 5000
+        # Feign请求处理超时时间，默认是60秒,单位毫秒
+        readTimeout: 4000
+#设置是否输出sql语句
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
