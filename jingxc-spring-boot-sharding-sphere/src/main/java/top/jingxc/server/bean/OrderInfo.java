@@ -2,6 +2,7 @@ package top.jingxc.server.bean;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,6 +16,6 @@ import lombok.NoArgsConstructor;
 public class OrderInfo {
 
     @TableId
-    private String id;
+    private long id;
     private int orderId;
 }
