@@ -1,0 +1,38 @@
+spring:
+  application:
+    name: jingxc-boot-sharding-sphere
+  dataSources:
+    ds_0:
+      dataSourceClassName: com.zaxxer.hikari.HikariDataSource
+      driverClassName: com.mysql.jdbc.Driver
+      jdbcUrl: jdbc:mysql://localhost:3306/test_demo_011
+      username: root
+      password: 100uu100UU
+  props:
+    sql:
+      show: true
+  rules:
+    sharding:
+      tables:
+        t_order:
+          actual-data-nodes: ds_0.t_order_$->{0..1}
+          table-strategy:
+            inline:
+              sharding-column: order_id
+              algorithm-expression: t_order_$->{order_id % 2}
+          key-generator:
+            column: id
+            type: SNOWFLAKE
+server:
+  port: 8090
+  servlet:
+    context-path: /jingxc/sharding/sphere
+  tomcat:
+    threads:
+      max: 1000
+    max-connections: 20000
+  forward-headers-strategy: native
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  mapper-locations: classpath:/mapper/**.xml

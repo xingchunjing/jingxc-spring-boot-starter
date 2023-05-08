@@ -15,6 +15,7 @@
         <module>jingxc-spring-boot-apple</module>
         <module>jingxc-spring-boot-paypal</module>
         <module>jingxc-spring-boot-xsolla</module>
+        <module>jingxc-spring-boot-sharding-sphere</module>
     </modules>
 
     <name>jingxc-spring-boot-starter</name>
@@ -143,6 +144,12 @@
                 <groupId>com.google.api-client</groupId>
                 <artifactId>google-api-client</artifactId>
                 <version>${google-api-client.version}</version>
+            </dependency>
+            <!-- https://mvnrepository.com/artifact/org.apache.shardingsphere/shardingsphere-jdbc-core -->
+            <dependency>
+                <groupId>org.apache.shardingsphere</groupId>
+                <artifactId>shardingsphere-jdbc-core</artifactId>
+                <version>4.1.1</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
