@@ -13,6 +13,6 @@ import lombok.NoArgsConstructor;
 public class TOrder {
 
     @TableId
-    private Long id;
-    private String orderId;
+    private String id;
+    private int orderId;
 }

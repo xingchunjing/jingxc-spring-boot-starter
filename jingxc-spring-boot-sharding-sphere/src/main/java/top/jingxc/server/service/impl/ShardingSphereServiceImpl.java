@@ -1,5 +1,6 @@
 package top.jingxc.server.service.impl;
 
+import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import top.jingxc.server.bean.TOrder;
@@ -24,7 +25,7 @@ public class ShardingSphereServiceImpl implements ShardingSphereService {
 
         for (int i = 100201; i <= 100211; i++) {
             //baseMapper.insertOrder(i + "");
-            TOrder build = TOrder.builder().orderId(i + "").build();
+            TOrder build = TOrder.builder().orderId(i).id(IdWorker.getIdStr()).build();
 
             orderInfoMapper.insert(build);
         }
