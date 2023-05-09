@@ -62,16 +62,11 @@
         <!--        </dependency>-->
 
         <dependency>
-            <groupId>org.apache.tomcat</groupId>
-            <artifactId>tomcat-dbcp</artifactId>
-            <version>10.0.16</version>
-        </dependency>
-
-        <dependency>
             <groupId>org.apache.shardingsphere</groupId>
             <artifactId>shardingsphere-jdbc-core-spring-boot-starter</artifactId>
             <version>5.1.1</version>
         </dependency>
+
     </dependencies>
 
 </project>

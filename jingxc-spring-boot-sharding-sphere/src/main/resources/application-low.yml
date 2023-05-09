@@ -1,0 +1,76 @@
+spring:
+  main:
+    allow-bean-definition-overriding: true  #一个实体类对应多张表，覆盖，不然启动报错
+  sharding-sphere: # Sharding-JDBC的配置
+    datasource:
+      # 数据源（逻辑名字）# 给每个数据源取别名，下面的ds0,ds1任意取名字
+      names: ds0,ds1
+      # 配置数据源# 每个数据源配置数据库连接信息
+      ds0:
+        type: com.alibaba.druid.pool.DruidDataSource
+        driver-class-name: com.mysql.jdbc.Driver
+        url: jdbc:mysql://localhost:3306/test_demo_0?characterEncoding=utf8&useSSL=true&createDatabaseIfNotExist=true&serverTimezone=GMT&nullNamePatternMatchesAll=true
+        username: root
+        password: 100uu100UU
+        druid:
+          max-active: 3000
+          filters: stat
+          initialSize: 10
+          maxWait: 60000
+          minIdle: 10
+          timeBetweenEvictionRunsMillis: 60000
+          minEvictableIdleTimeMillis: 300000
+          validationQuery: select 'x'
+          testWhileIdle: true
+          testOnBorrow: true
+          testOnReturn: false
+          poolPreparedStatements: true
+          maxOpenPreparedStatements: 20
+      ds1:
+        type: com.alibaba.druid.pool.DruidDataSource
+        driver-class-name: com.mysql.jdbc.Driver
+        url: jdbc:mysql://127.0.0.1:3306/test_demo_1?useUnicode=true&characterEncoding=utf8&tinyInt1isBit=false&useSSL=false&serverTimezone=GMT
+        username: root
+        password: 100uu100UU
+        druid:
+          max-active: 3000
+          filters: stat
+          initialSize: 10
+          maxWait: 60000
+          minIdle: 10
+          timeBetweenEvictionRunsMillis: 60000
+          minEvictableIdleTimeMillis: 300000
+          validationQuery: select 'x'
+          testWhileIdle: true
+          testOnBorrow: true
+          testOnReturn: false
+          poolPreparedStatements: true
+          maxOpenPreparedStatements: 20
+    # 分片的配置
+    sharding:
+      # 表的分片策略
+      tables:
+        # 逻辑表的名称,# t_order 逻辑表名,数据库中需要分表操作的表名，如果不需要做分表操作，走default-table-strategy:
+        t_order:
+          # 数据节点配置，采用Groovy表达式,数据源$->{0..N}.逻辑表名$->{0..N}
+          actual-data-nodes: ds$->{0..1}.t_order_$->{0..1}
+          # 配置策略
+          table-strategy:
+            # 精确匹配
+            inline:
+              sharding-column: order_id
+              algorithm-expression: t_order_$->{order_id % 2}
+          database-strategy:
+            # 精确匹配
+            inline:
+              sharding-column: id
+              algorithm-expression: ds$->{id % 2}
+          # 主键生成策略
+          key-generator:
+            # 主键
+            column: id
+            # 雪花算法
+            type: SNOWFLAKE
+    props: # 日志显示具体的SQL
+      sql:
+        show: true

@@ -60,7 +60,7 @@ spring:
               standard:
                 sharding-column: order_id
                 # 分片算法名字
-                sharding-algorithm-name: t-order
+                sharding-algorithm-name: table-inline
             key-generate-strategy: # 主键生成策略
               column: id  # 主键列
               key-generator-name: snowflake  # 策略算法名称(推荐使用雪花算法)
@@ -76,7 +76,7 @@ spring:
             type: INLINE
             props:
               algorithm-expression: m$->{id % 2}
-          t-order:
+          table-inline:
             type: INLINE
             props:
               algorithm-expression: t_order_$->{order_id % 2}
