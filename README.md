@@ -7,6 +7,9 @@
 * jingxc-boot-paypal:paypal api接入项目
 * jingxc-boot-xsolla:xsolla api接入项目
 * jingxc-boot-google:google api接入项目
+* jingxc-boot-apple:apple api接入项目
+* jingxc-boot-sharding-sphere:sharding-sphere 接入项目
+* jingxc-boot-facebook:facebook api接入项目
 
 ## 2.部署
 
