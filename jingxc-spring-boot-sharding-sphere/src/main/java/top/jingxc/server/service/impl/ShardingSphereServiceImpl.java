@@ -25,9 +25,9 @@ public class ShardingSphereServiceImpl implements ShardingSphereService {
 //            orderInfoMapper.insert(build);
 //        }
 
-        OrderInfo build = OrderInfo.builder().orderId(100201).id(1655869777362563075L).build();
+        OrderInfo build = OrderInfo.builder().orderId(100211).id(1655869777362563075L).build();
         OrderInfo orderInfo = orderInfoMapper.selectOne(new QueryWrapper<>(build));
-
+        
         return ReturnResultSuccess.builder().code(ConstantCommon.RETURN_CODE_200).msg("success").data(orderInfo).build();
     }
 }

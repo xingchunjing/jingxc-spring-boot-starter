@@ -50,10 +50,10 @@ spring:
       readwrite-splitting:
         data-sources:
           rw:
-            static-strategy:
+            type: Static
+            props:
               write-data-source-name: master
-              read-data-source-names:
-                - slave
+              read-data-source-names: slave
             load-balancer-name: round-robin
             transactionalReadQueryStrategy: PRIMARY
         load-balancers:
