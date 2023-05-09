@@ -1,10 +1,8 @@
 package top.jingxc.server.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import com.baomidou.mybatisplus.core.toolkit.IdWorker;
-
 import top.jingxc.server.bean.OrderInfo;
 import top.jingxc.server.config.ConstantCommon;
 import top.jingxc.server.config.ReturnResult;
@@ -21,11 +19,15 @@ public class ShardingSphereServiceImpl implements ShardingSphereService {
     @Override
     public ReturnResult test() {
 
-        for (int i = 100201; i <= 100211; i++) {
-            OrderInfo build = OrderInfo.builder().orderId(i).id(IdWorker.getId()).build();
+//        for (int i = 100201; i <= 100211; i++) {
+//            OrderInfo build = OrderInfo.builder().orderId(i).id(IdWorker.getId()).build();
+//
+//            orderInfoMapper.insert(build);
+//        }
 
-            orderInfoMapper.insert(build);
-        }
-        return ReturnResultSuccess.builder().code(ConstantCommon.RETURN_CODE_200).msg("success").build();
+        OrderInfo build = OrderInfo.builder().orderId(100201).id(1655869777362563075L).build();
+        OrderInfo orderInfo = orderInfoMapper.selectOne(new QueryWrapper<>(build));
+
+        return ReturnResultSuccess.builder().code(ConstantCommon.RETURN_CODE_200).msg("success").data(orderInfo).build();
     }
 }

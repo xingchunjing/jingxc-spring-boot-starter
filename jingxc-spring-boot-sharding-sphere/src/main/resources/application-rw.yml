@@ -1,0 +1,64 @@
+spring:
+  shardingsphere:
+    # 是否开启
+    datasource:
+      # 数据源（逻辑名字）
+      names: master,slave
+      # 配置数据源
+      master:
+        type: com.alibaba.druid.pool.DruidDataSource
+        driver-class-name: com.mysql.jdbc.Driver
+        url: jdbc:mysql://localhost:3306/test_demo_master?useSSL=false&autoReconnect=true&characterEncoding=UTF-8&serverTimezone=UTC
+        username: root
+        password: 100uu100UU
+        druid:
+          max-active: 3000
+          filters: stat
+          initialSize: 10
+          maxWait: 60000
+          minIdle: 10
+          timeBetweenEvictionRunsMillis: 60000
+          minEvictableIdleTimeMillis: 300000
+          validationQuery: select 'x'
+          testWhileIdle: true
+          testOnBorrow: true
+          testOnReturn: false
+          poolPreparedStatements: true
+          maxOpenPreparedStatements: 20
+      slave:
+        type: com.alibaba.druid.pool.DruidDataSource
+        driver-class-name: com.mysql.jdbc.Driver
+        url: jdbc:mysql://localhost:3306/test_demo_slave?useSSL=false&autoReconnect=true&characterEncoding=UTF-8&serverTimezone=UTC
+        username: root
+        password: 100uu100UU
+        druid:
+          max-active: 3000
+          filters: stat
+          initialSize: 10
+          maxWait: 60000
+          minIdle: 10
+          timeBetweenEvictionRunsMillis: 60000
+          minEvictableIdleTimeMillis: 300000
+          validationQuery: select 'x'
+          testWhileIdle: true
+          testOnBorrow: true
+          testOnReturn: false
+          poolPreparedStatements: true
+          maxOpenPreparedStatements: 20
+    # 分片的配置
+    rules:
+      readwrite-splitting:
+        data-sources:
+          rw:
+            static-strategy:
+              write-data-source-name: master
+              read-data-source-names:
+                - slave
+            load-balancer-name: round-robin
+            transactionalReadQueryStrategy: PRIMARY
+        load-balancers:
+          round-robin:
+            type: ROUND_ROBIN
+    props:
+      # 日志显示具体的SQL
+      sql-show: true
