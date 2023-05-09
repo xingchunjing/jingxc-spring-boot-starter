@@ -1,0 +1,85 @@
+spring:
+  shardingsphere:
+    # 是否开启
+    datasource:
+      # 数据源（逻辑名字）
+      names: m0,m1
+      # 配置数据源
+      m0:
+        type: com.alibaba.druid.pool.DruidDataSource
+        driver-class-name: com.mysql.jdbc.Driver
+        url: jdbc:mysql://localhost:3306/test_demo_0?useSSL=false&autoReconnect=true&characterEncoding=UTF-8&serverTimezone=UTC
+        username: root
+        password: 100uu100UU
+        druid:
+          max-active: 3000
+          filters: stat
+          initialSize: 10
+          maxWait: 60000
+          minIdle: 10
+          timeBetweenEvictionRunsMillis: 60000
+          minEvictableIdleTimeMillis: 300000
+          validationQuery: select 'x'
+          testWhileIdle: true
+          testOnBorrow: true
+          testOnReturn: false
+          poolPreparedStatements: true
+          maxOpenPreparedStatements: 20
+      m1:
+        type: com.alibaba.druid.pool.DruidDataSource
+        driver-class-name: com.mysql.jdbc.Driver
+        url: jdbc:mysql://localhost:3306/test_demo_1?useSSL=false&autoReconnect=true&characterEncoding=UTF-8&serverTimezone=UTC
+        username: root
+        password: 100uu100UU
+        druid:
+          max-active: 3000
+          filters: stat
+          initialSize: 10
+          maxWait: 60000
+          minIdle: 10
+          timeBetweenEvictionRunsMillis: 60000
+          minEvictableIdleTimeMillis: 300000
+          validationQuery: select 'x'
+          testWhileIdle: true
+          testOnBorrow: true
+          testOnReturn: false
+          poolPreparedStatements: true
+          maxOpenPreparedStatements: 20
+    # 分片的配置
+    rules:
+      sharding:
+        # 表的分片策略
+        tables:
+          # 逻辑表的名称
+          t_order:
+            # 数据节点配置，采用Groovy表达式
+            actual-data-nodes: m${0..1}.t_order_$->{0..1}
+            # 配置策略
+            table-strategy:
+              # 用于单分片键的标准分片场景
+              standard:
+                sharding-column: order_id
+                # 分片算法名字
+                sharding-algorithm-name: t-order
+            key-generate-strategy: # 主键生成策略
+              column: id  # 主键列
+              key-generator-name: snowflake  # 策略算法名称(推荐使用雪花算法)
+        defaultDatabaseStrategy:
+          standard:
+            shardingColumn: id
+            shardingAlgorithmName: database-inline
+        key-generators:
+          snowflake:
+            type: SNOWFLAKE
+        sharding-algorithms:
+          database-inline:
+            type: INLINE
+            props:
+              algorithm-expression: m$->{id % 2}
+          t-order:
+            type: INLINE
+            props:
+              algorithm-expression: t_order_$->{order_id % 2}
+    props:
+      # 日志显示具体的SQL
+      sql-show: true

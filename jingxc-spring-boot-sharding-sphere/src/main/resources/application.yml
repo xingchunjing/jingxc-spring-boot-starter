@@ -4,7 +4,7 @@ server:
     context-path: /jingxc/sharding/sphere
 spring:
   profiles:
-    active: dev
+    active: high
   application:
     name: jingxc-boot-sharding-sphere
 mybatis-plus:
