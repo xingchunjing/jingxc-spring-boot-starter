@@ -5,6 +5,14 @@ spring:
     port: 5672
     username: root
     password: 100uu100UU
+    listener:
+      simple:
+        #手动确认消息 ack
+        acknowledge-mode: manual
+        retry:
+          enabled: true
+          max-attempts: 3
+          max-interval: 1000ms
   #配置redis
   redis:
     host: 127.0.0.1

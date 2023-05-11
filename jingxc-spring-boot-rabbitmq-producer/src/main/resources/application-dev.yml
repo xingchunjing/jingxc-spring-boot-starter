@@ -5,7 +5,23 @@ spring:
     port: 5672
     username: root
     password: 100uu100UU
-  #配置redis
+    virtual-host: /
+    # 开启回退模式 消息从 exchange 到 queue 投递失败有一个 returnCallback 退回模式。
+    publisher-returns: true
+    # 开启发布确认 消息从 producer 到 rabbitmq broker有一个 confirmCallback 确认模式。
+    publisher-confirm-type: correlated
+    listener:
+      simple:
+        # auto：⾃动模式 （根据侦听器检测是正常返回、还是抛出异常来发出 ack/nack），默认，manual：手动模式，none：自动模式（默认开启）
+        acknowledge-mode: auto
+        retry:
+          #开启重试
+          enabled: true
+          #最大重试次数
+          max-attempts: 3
+          #重试间隔
+          max-interval: 1000ms
+  # 配置redis
   redis:
     host: 127.0.0.1
     port: 6379
