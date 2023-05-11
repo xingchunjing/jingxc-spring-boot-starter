@@ -16,6 +16,8 @@
         <module>jingxc-spring-boot-paypal</module>
         <module>jingxc-spring-boot-xsolla</module>
         <module>jingxc-spring-boot-sharding-sphere</module>
+        <module>jingxc-spring-boot-rabbitmq-producer</module>
+        <module>jingxc-spring-boot-rabbitmq-consumer</module>
     </modules>
 
     <name>jingxc-spring-boot-starter</name>
@@ -40,6 +42,7 @@
         <java-jwt.version>4.2.1</java-jwt.version>
         <google-api-client-jackson2.version>1.30.4</google-api-client-jackson2.version>
         <google-api-client.version>1.28.0</google-api-client.version>
+        <amqp.version>2.7.3</amqp.version>
     </properties>
 
     <dependencyManagement>
@@ -145,7 +148,12 @@
                 <artifactId>google-api-client</artifactId>
                 <version>${google-api-client.version}</version>
             </dependency>
-            
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-amqp</artifactId>
+                <version>${amqp.version}</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 

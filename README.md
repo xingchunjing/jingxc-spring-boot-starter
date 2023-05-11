@@ -10,6 +10,7 @@
 * jingxc-boot-apple:apple api接入项目
 * jingxc-boot-sharding-sphere:sharding-sphere 接入项目
 * jingxc-boot-facebook:facebook api接入项目
+* jingxc-boot-rabbit-mq:RabbitMQ api接入项目
 
 ## 2.部署
 

@@ -1,0 +1,14 @@
+spring:
+  profiles:
+    active: dev
+  application:
+    name: jingxc-boot-rabbitmq-consumer
+server:
+  port: 8097
+  servlet:
+    context-path: /jingxc/rabbitmq
+  tomcat:
+    threads:
+      max: 1000
+    max-connections: 20000
+  forward-headers-strategy: native
