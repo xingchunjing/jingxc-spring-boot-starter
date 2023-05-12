@@ -3,6 +3,7 @@ package top.jingxc.server.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import top.jingxc.server.config.ReturnResult;
 import top.jingxc.server.service.RabbitMQService;
@@ -32,5 +33,10 @@ public class RabbitMQController extends BaseController {
     @GetMapping("/fanout")
     public ReturnResult fanout() {
         return rabbitMQServiceImpl.fanout();
+    }
+
+    @GetMapping("/routing")
+    public ReturnResult routing(@RequestParam("gameId") String gameId) {
+        return rabbitMQServiceImpl.routing(gameId);
     }
 }

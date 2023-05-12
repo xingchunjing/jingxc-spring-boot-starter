@@ -17,4 +17,11 @@ public interface RabbitMQService {
      * @return
      */
     ReturnResult fanout();
+
+    /**
+     * 路由模式
+     *
+     * @return
+     */
+    ReturnResult routing(String gameId);
 }

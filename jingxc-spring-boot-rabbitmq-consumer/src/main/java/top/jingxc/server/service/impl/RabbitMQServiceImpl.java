@@ -99,4 +99,92 @@ public class RabbitMQServiceImpl implements RabbitMQService {
             }
         }
     }
+
+    /**
+     * rouing 路由模式 同一路由下 接收相同的数据。
+     */
+
+    @RabbitListener(bindings = {
+            @QueueBinding(
+                    value = @Queue(value = "TEST_ROUTING_QUEUE_A"),
+                    exchange = @Exchange(value = "TEST_ROUTING_EXCHANGE", type = "direct"),
+                    key = {"217"}
+            )
+    })
+    public void routing0(String msg, Channel channel, Message message) throws IOException {
+        try {
+            log.info("收到消息：" + msg);
+            JSONObject jsonObject = JSON.parseObject(msg);
+            channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
+            log.info("进入routing0" + msg);
+            //TODO 具体业务
+        } catch (Exception e) {
+            if (message.getMessageProperties().getRedelivered()) {
+                System.out.println("消息已重复处理失败,拒绝再次接收！");
+                // 拒绝消息，requeue=false 表示不再重新入队，如果配置了死信队列则进入死信队列
+                channel.basicReject(message.getMessageProperties().getDeliveryTag(), false);
+            } else {
+                System.out.println("消息即将再次返回队列处理！");
+                // requeue为是否重新回到队列，true重新入队
+                channel.basicNack(message.getMessageProperties().getDeliveryTag(), false, true);
+            }
+        }
+    }
+
+    /**
+     * rouing 路由模式 同一路由下 接收相同的数据。
+     */
+    @RabbitListener(bindings = {
+            @QueueBinding(
+                    value = @Queue(value = "TEST_ROUTING_QUEUE_B"),
+                    exchange = @Exchange(value = "TEST_ROUTING_EXCHANGE", type = "direct"),
+                    key = {"217"}
+            )
+    })
+    public void routing1(String msg, Channel channel, Message message) throws IOException {
+        try {
+            log.info("收到消息：" + msg);
+            JSONObject jsonObject = JSON.parseObject(msg);
+            channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
+            log.info("进入routing1" + msg);
+            //TODO 具体业务
+        } catch (Exception e) {
+            if (message.getMessageProperties().getRedelivered()) {
+                System.out.println("消息已重复处理失败,拒绝再次接收！");
+                // 拒绝消息，requeue=false 表示不再重新入队，如果配置了死信队列则进入死信队列
+                channel.basicReject(message.getMessageProperties().getDeliveryTag(), false);
+            } else {
+                System.out.println("消息即将再次返回队列处理！");
+                // requeue为是否重新回到队列，true重新入队
+                channel.basicNack(message.getMessageProperties().getDeliveryTag(), false, true);
+            }
+        }
+    }
+
+    @RabbitListener(bindings = {
+            @QueueBinding(
+                    value = @Queue(value = "TEST_ROUTING_QUEUE_B"),
+                    exchange = @Exchange(value = "TEST_ROUTING_EXCHANGE", type = "direct"),
+                    key = {"217", "218"}
+            )
+    })
+    public void routing2(String msg, Channel channel, Message message) throws IOException {
+        try {
+            log.info("收到消息：" + msg);
+            JSONObject jsonObject = JSON.parseObject(msg);
+            channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
+            log.info("进入routing2" + msg);
+            //TODO 具体业务
+        } catch (Exception e) {
+            if (message.getMessageProperties().getRedelivered()) {
+                System.out.println("消息已重复处理失败,拒绝再次接收！");
+                // 拒绝消息，requeue=false 表示不再重新入队，如果配置了死信队列则进入死信队列
+                channel.basicReject(message.getMessageProperties().getDeliveryTag(), false);
+            } else {
+                System.out.println("消息即将再次返回队列处理！");
+                // requeue为是否重新回到队列，true重新入队
+                channel.basicNack(message.getMessageProperties().getDeliveryTag(), false, true);
+            }
+        }
+    }
 }
