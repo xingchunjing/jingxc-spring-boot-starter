@@ -187,4 +187,57 @@ public class RabbitMQServiceImpl implements RabbitMQService {
             }
         }
     }
+
+    /**
+     * Topic 模式star
+     */
+    @RabbitListener(bindings = {
+            @QueueBinding(
+                    value = @Queue(value = "TEST_TOPIC_QUEUE_A"),
+                    exchange = @Exchange(value = "TEST_TOPIC_EXCHANGE", type = "topic"),//绑定交换机 //默认直连 direct
+                    key = {"218.#"}
+            )
+    })
+    public void topic1(String msg, Channel channel, Message message) throws IOException {
+        try {
+            log.info("topic1收到消息：" + msg);
+            channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
+            //TODO 具体业务
+        } catch (Exception e) {
+            if (message.getMessageProperties().getRedelivered()) {
+                System.out.println("消息已重复处理失败,拒绝再次接收！");
+                // 拒绝消息，requeue=false 表示不再重新入队，如果配置了死信队列则进入死信队列
+                channel.basicReject(message.getMessageProperties().getDeliveryTag(), false);
+            } else {
+                System.out.println("消息即将再次返回队列处理！");
+                // requeue为是否重新回到队列，true重新入队
+                channel.basicNack(message.getMessageProperties().getDeliveryTag(), false, true);
+            }
+        }
+    }
+
+    @RabbitListener(bindings = {
+            @QueueBinding(
+                    value = @Queue(value = "TEST_TOPIC_QUEUE_B"),
+                    exchange = @Exchange(value = "TEST_TOPIC_EXCHANGE", type = "topic"),//绑定交换机 //默认直连 direct
+                    key = {"*.2000100006"}
+            )
+    })
+    public void topic2(String msg, Channel channel, Message message) throws IOException {
+        try {
+            log.info("topic2收到消息：" + msg);
+            channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
+            //TODO 具体业务
+        } catch (Exception e) {
+            if (message.getMessageProperties().getRedelivered()) {
+                System.out.println("消息已重复处理失败,拒绝再次接收！");
+                // 拒绝消息，requeue=false 表示不再重新入队，如果配置了死信队列则进入死信队列
+                channel.basicReject(message.getMessageProperties().getDeliveryTag(), false);
+            } else {
+                System.out.println("消息即将再次返回队列处理！");
+                // requeue为是否重新回到队列，true重新入队
+                channel.basicNack(message.getMessageProperties().getDeliveryTag(), false, true);
+            }
+        }
+    }
 }

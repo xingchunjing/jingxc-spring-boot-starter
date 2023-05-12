@@ -24,4 +24,13 @@ public interface RabbitMQService {
      * @return
      */
     ReturnResult routing(String gameId);
+
+    /**
+     * 主题模式
+     *
+     * @param gameId
+     * @param channelId
+     * @return
+     */
+    ReturnResult topic(String gameId, String channelId);
 }

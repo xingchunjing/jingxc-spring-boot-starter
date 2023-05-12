@@ -39,4 +39,9 @@ public class RabbitMQController extends BaseController {
     public ReturnResult routing(@RequestParam("gameId") String gameId) {
         return rabbitMQServiceImpl.routing(gameId);
     }
+
+    @GetMapping("/topic")
+    public ReturnResult topic(@RequestParam("gameId") String gameId, @RequestParam("channelId") String channelId) {
+        return rabbitMQServiceImpl.topic(gameId, channelId);
+    }
 }

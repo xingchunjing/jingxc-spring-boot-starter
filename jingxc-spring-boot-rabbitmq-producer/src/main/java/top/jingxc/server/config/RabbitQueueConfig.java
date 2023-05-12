@@ -16,8 +16,9 @@ public class RabbitQueueConfig {
     public final static String TEST_ROUTING_QUEUE_B = "TEST_ROUTING_QUEUE_B";
     public final static String TEST_ROUTING_EXCHANGE = "TEST_ROUTING_EXCHANGE";
 
-    public final static String DIRECT = "direct";
-    public final static String FANOUNT = "fanout";
+    public final static String TEST_TOPIC_QUEUE_A = "TEST_TOPIC_QUEUE_A";
+    public final static String TEST_TOPIC_QUEUE_B = "TEST_TOPIC_QUEUE_B";
+    public final static String TEST_TOPIC_EXCHANGE = "TEST_TOPIC_EXCHANGE";
 
     /**
      * work queue 模型
@@ -45,6 +46,16 @@ public class RabbitQueueConfig {
         return new Queue(TEST_ROUTING_QUEUE_B);
     }
 
+    @Bean
+    public Queue topicQueueA() {
+        return new Queue(TEST_TOPIC_QUEUE_A);
+    }
+
+    @Bean
+    public Queue topicQueueB() {
+        return new Queue(TEST_TOPIC_QUEUE_B);
+    }
+
     /**
      * 声明fanout交换机
      */
@@ -57,6 +68,11 @@ public class RabbitQueueConfig {
     public DirectExchange routingExchange() {
         // 创建direct类型交换机，表示与此交换机会将消息发送给 routing_key 完全相同的队列
         return new DirectExchange(TEST_ROUTING_EXCHANGE);
+    }
+
+    @Bean("topicExchange")
+    public TopicExchange topicExchange() {
+        return new TopicExchange(TEST_TOPIC_EXCHANGE);
     }
 
     @Bean
@@ -74,5 +90,15 @@ public class RabbitQueueConfig {
     public Binding bindExchangeQueueB(Queue routingQueueB, @Qualifier("routingExchange") DirectExchange routingExchange) {
         // 队列二绑定direct交换机，并设置 routing_key 为 routing_second_queue_routing_key
         return BindingBuilder.bind(routingQueueB).to(routingExchange).with("218");
+    }
+
+    @Bean
+    public Binding topicExchangeBindingA(Queue topicQueueA, @Qualifier("topicExchange") TopicExchange topicExchange) {
+        return BindingBuilder.bind(topicQueueA).to(topicExchange).with("218.#");
+    }
+
+    @Bean
+    public Binding topicExchangeBindingB(Queue topicQueueB, @Qualifier("topicExchange") TopicExchange topicExchange) {
+        return BindingBuilder.bind(topicQueueB).to(topicExchange).with("*.2000100006");
     }
 }

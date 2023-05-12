@@ -109,4 +109,26 @@ public class RabbitMQServiceImpl implements RabbitMQService {
                 .count(ConstantCommon.RETURN_COUNT_1).build();
     }
 
+    @Override
+    @OperationLogger
+    public ReturnResult topic(String gameId, String channelId) {
+
+        Map<String, Object> msg = new HashMap<>();
+        msg.put("gameId", gameId);
+        msg.put("channelId", channelId);
+
+        CorrelationData correlationData = new CorrelationData(gameId + "-" + channelId + "-" + System.currentTimeMillis());
+
+        rabbitTemplate.setConfirmCallback(confirmCallbackServiceImpl);
+        rabbitTemplate.setReturnCallback(returnCallbackServiceImpl);
+        String routingKey = gameId + "." + channelId;
+        rabbitTemplate.convertAndSend(rabbitQueueConfig.TEST_TOPIC_EXCHANGE, routingKey, JSON.toJSONString(msg), message -> {
+            message.getMessageProperties().setDeliveryMode(MessageDeliveryMode.PERSISTENT);
+            return message;
+        }, correlationData);
+
+        return ReturnResultSuccess.builder().code(ConstantCommon.RETURN_CODE_200).msg("success").data("")
+                .count(ConstantCommon.RETURN_COUNT_1).build();
+    }
+
 }
